@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
 
+  @override
+  HomeState createState() => HomeState();
+}
+
+class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final TextEditingController matricula = TextEditingController();
     int imageIndex = 0;
-    final List<String> imagens = [
+    List<String> imagens = [
       'https://i.pinimg.com/736x/a3/71/4b/a3714ba657487833c35ef16632f7b896.jpg',
       'https://www.diariodocentrodomundo.com.br/wp-content/uploads/2014/07/mussum-1.jpg',
       'https://s2-g1.glbimg.com/vbxlmE70yvlrZOlq0Jd0Q5FzXwQ=/0x0:730x489/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2022/E/6/6a7nQrT1uf8IrQjSYflQ/csm-pincel-413e3aba36.jpg'
@@ -67,20 +72,19 @@ class Home extends StatelessWidget {
                         flex: 1,
                         child: ElevatedButton(
                             onPressed: () {
-                              switch (imageIndex) {
-                                case 0:
-                                  imageIndex = 1;
-                                  break;
-                                case 1:
-                                  imageIndex = 2;
-                                  break;
-                                case 2:
-                                  imageIndex = 0;
-                                  break;
-                              }
-                              ;
-
-                              print(imagens[imageIndex]);
+                              setState(() {
+                                switch (imageIndex) {
+                                  case 0:
+                                    imageIndex = 1;
+                                    break;
+                                  case 1:
+                                    imageIndex = 2;
+                                    break;
+                                  case 2:
+                                    imageIndex = 0;
+                                    break;
+                                }
+                              });
                             },
                             child: const Text("Clique aqui")))
                   ]),
