@@ -14,12 +14,18 @@ class HomeState extends State<Home> {
   final TextEditingController salarioBruto = TextEditingController();
 
   //* VARIÁVEIS QUE AJUDAM A DEIXAR A IMAGEM DO FUNCIONÁRIO DINÂMICA
-  int imageIndex = 0;
-  List<String> imagens = [
-    'https://i.pinimg.com/736x/a3/71/4b/a3714ba657487833c35ef16632f7b896.jpg',
-    'https://www.diariodocentrodomundo.com.br/wp-content/uploads/2014/07/mussum-1.jpg',
-    'https://s2-g1.glbimg.com/vbxlmE70yvlrZOlq0Jd0Q5FzXwQ=/0x0:730x489/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2022/E/6/6a7nQrT1uf8IrQjSYflQ/csm-pincel-413e3aba36.jpg'
-  ];
+  Map<String, String> imagens = {
+    "20001":
+        'https://i.pinimg.com/736x/a3/71/4b/a3714ba657487833c35ef16632f7b896.jpg',
+    "20002":
+        'https://www.diariodocentrodomundo.com.br/wp-content/uploads/2014/07/mussum-1.jpg',
+    "20003":
+        'https://s2-g1.glbimg.com/vbxlmE70yvlrZOlq0Jd0Q5FzXwQ=/0x0:730x489/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2022/E/6/6a7nQrT1uf8IrQjSYflQ/csm-pincel-413e3aba36.jpg'
+  };
+  String imagem_default =
+      "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.webp";
+  String imagem_funcionario =
+      "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.webp";
 
   //* VARIÁVEIS DAS CIDADES E BAIRROS
   List<String> cidades = ["Resende", "Itatiaia", "Volta Redonda"];
@@ -99,20 +105,26 @@ class HomeState extends State<Home> {
                         child: ElevatedButton(
                             onPressed: () {
                               setState(() {
-                                switch (imageIndex) {
-                                  case 0:
-                                    imageIndex = 1;
+                                switch (matricula.text) {
+                                  case "20001":
+                                    imagem_funcionario =
+                                        imagens[matricula.text]!;
                                     break;
-                                  case 1:
-                                    imageIndex = 2;
+                                  case "20002":
+                                    imagem_funcionario =
+                                        imagens[matricula.text]!;
                                     break;
-                                  case 2:
-                                    imageIndex = 0;
+                                  case "20003":
+                                    imagem_funcionario =
+                                        imagens[matricula.text]!;
+                                    break;
+                                  default:
+                                    imagem_funcionario = imagem_default;
                                     break;
                                 }
                               });
                             },
-                            child: const Text("Clique aqui")))
+                            child: const Text("Buscar imagem")))
                   ]),
                   const SizedBox(height: 10),
                   SizedBox(
@@ -120,7 +132,7 @@ class HomeState extends State<Home> {
                       width: 180,
                       child: Image(
                           fit: BoxFit.cover,
-                          image: NetworkImage(imagens[imageIndex]))),
+                          image: NetworkImage(imagem_funcionario))),
                   const SizedBox(height: 10)
                 ],
               ),
@@ -298,7 +310,7 @@ class HomeState extends State<Home> {
                   salarioBruto.clear();
 
                   setState(() {
-                    imageIndex = 0;
+                    imagem_funcionario = imagem_default;
                     cidadeSelecionada = "";
                     bairroSelecionado = "";
                     salarioLiquido = 0;
