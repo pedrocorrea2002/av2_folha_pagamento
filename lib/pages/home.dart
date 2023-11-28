@@ -9,13 +9,19 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
+  //* VARIÁVEIS DOS CAMPOS PREENCHIVEIS DO FORMULÁRIO
   final TextEditingController matricula = TextEditingController();
+  final TextEditingController salarioBruto = TextEditingController();
+
+  //* VARIÁVEIS QUE AJUDAM A DEIXAR A IMAGEM DO FUNCIONÁRIO DINÂMICA
   int imageIndex = 0;
   List<String> imagens = [
     'https://i.pinimg.com/736x/a3/71/4b/a3714ba657487833c35ef16632f7b896.jpg',
     'https://www.diariodocentrodomundo.com.br/wp-content/uploads/2014/07/mussum-1.jpg',
     'https://s2-g1.glbimg.com/vbxlmE70yvlrZOlq0Jd0Q5FzXwQ=/0x0:730x489/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2022/E/6/6a7nQrT1uf8IrQjSYflQ/csm-pincel-413e3aba36.jpg'
   ];
+
+  //* VARIÁVEIS DAS CIDADES E BAIRROS
   List<String> cidades = ["Resende", "Itatiaia", "Volta Redonda"];
   String cidadeSelecionada = "";
   Map<String, List<String>> bairros = {
@@ -25,6 +31,14 @@ class HomeState extends State<Home> {
   };
   List<String> bairrosDisponiveis = [];
   String bairroSelecionado = "";
+
+  //* VARIÁVEIS DO CÁLCULO DA FOLHA
+  double IRRF = 0;
+  double INSS = 0;
+  double salarioLiquido = 0;
+  String INSS_str = "0,00";
+  String IRRF_str = "0,00";
+  String liquido_str = "0,00";
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +152,98 @@ class HomeState extends State<Home> {
               //* PARTE DO CÁLCULO DA FOLHA
               const Text("Cálculo da Folha",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold))
+                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
+
+              Row(
+                children: [
+                  const Expanded(
+                      flex: 2,
+                      child: Text(
+                        "Salário bruto:",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      )),
+                  Expanded(
+                      flex: 3,
+                      child: TextFormField(
+                          controller: salarioBruto,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            contentPadding: EdgeInsets.all(10),
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.black12, width: 10)),
+                          )))
+                ],
+              ),
+              Row(
+                children: [
+                  const Expanded(
+                      flex: 2,
+                      child: Text(
+                        "IRRF:",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      )),
+                  Expanded(
+                      flex: 3,
+                      child: Text(
+                        IRRF_str,
+                        style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ))
+                ],
+              ),
+              Row(
+                children: [
+                  const Expanded(
+                      flex: 2,
+                      child: Text(
+                        "INSS:",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      )),
+                  Expanded(
+                      flex: 3,
+                      child: Text(
+                        INSS_str,
+                        style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ))
+                ],
+              ),
+              Row(
+                children: [
+                  const Expanded(
+                      flex: 2,
+                      child: Text(
+                        "Salário líquido:",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      )),
+                  Expanded(
+                      flex: 3,
+                      child: Text(
+                        liquido_str,
+                        style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ))
+                ],
+              )
             ],
           ),
         ),
@@ -148,15 +253,61 @@ class HomeState extends State<Home> {
             children: [
               ElevatedButton(
                   onPressed: () {
-                    // double av1Value = double.parse(av1.text);
-                    // double av2Value = double.parse(av2.text);
+                    double bruto = double.parse(salarioBruto.text);
 
-                    // media.text = "${(av1Value + av2Value) / 2}";
+                    setState(() {
+                      //* CALCULANDO INSS
+                      if (bruto <= 1320) {
+                        INSS = bruto * 0.075;
+                      } else if (bruto >= 1320 && bruto <= 2571.29) {
+                        INSS = bruto * 0.09;
+                      } else if (bruto >= 2571.30 && bruto <= 3856.94) {
+                        INSS = bruto * 0.12;
+                      } else {
+                        INSS = bruto * 0.14;
+                      }
+
+                      //* CALCULANDO IRRF
+                      double baseIRRF = bruto - INSS;
+
+                      if (baseIRRF <= 2112) {
+                        IRRF = 0;
+                      } else if (baseIRRF >= 2112.01 && baseIRRF <= 2826.65) {
+                        IRRF = baseIRRF * 0.075;
+                      } else if (baseIRRF >= 2826.66 && baseIRRF <= 3751.05) {
+                        IRRF = baseIRRF * 0.15;
+                      } else if (baseIRRF >= 3751.06 && baseIRRF <= 4664.68) {
+                        IRRF = baseIRRF * 0.22;
+                      } else {
+                        IRRF = baseIRRF * 27.5;
+                      }
+
+                      salarioLiquido = baseIRRF - IRRF;
+
+                      INSS_str = INSS.toStringAsFixed(2).replaceAll(".", ",");
+                      IRRF_str = IRRF.toStringAsFixed(2).replaceAll(".", ",");
+                      liquido_str = salarioLiquido
+                          .toStringAsFixed(2)
+                          .replaceAll(".", ",");
+                    });
                   },
                   child: const Text("Calcular")),
               ElevatedButton(
                 onPressed: () {
                   matricula.clear();
+                  salarioBruto.clear();
+
+                  setState(() {
+                    imageIndex = 0;
+                    cidadeSelecionada = "";
+                    bairroSelecionado = "";
+                    salarioLiquido = 0;
+                    INSS = 0;
+                    IRRF = 0;
+                    IRRF_str = "0,00";
+                    INSS_str = "0,00";
+                    liquido_str = "0,00";
+                  });
                 },
                 child: const Text("Limpar"),
               ),
