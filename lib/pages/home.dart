@@ -56,7 +56,7 @@ class HomeState extends State<Home> {
                 ],
               ),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 30),
                   Row(children: [
@@ -88,12 +88,14 @@ class HomeState extends State<Home> {
                             },
                             child: const Text("Clique aqui")))
                   ]),
+                  const SizedBox(height: 10),
                   SizedBox(
                       height: 250,
                       width: 180,
                       child: Image(
                           fit: BoxFit.cover,
                           image: NetworkImage(imagens[imageIndex]))),
+                  const SizedBox(height: 10)
                 ],
               )
             ],
