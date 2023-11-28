@@ -7,7 +7,12 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextEditingController matricula = TextEditingController();
-    final TextEditingController nome = TextEditingController();
+    int imageIndex = 0;
+    final List<String> imagens = [
+      'https://i.pinimg.com/736x/a3/71/4b/a3714ba657487833c35ef16632f7b896.jpg',
+      'https://www.diariodocentrodomundo.com.br/wp-content/uploads/2014/07/mussum-1.jpg',
+      'https://s2-g1.glbimg.com/vbxlmE70yvlrZOlq0Jd0Q5FzXwQ=/0x0:730x489/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2022/E/6/6a7nQrT1uf8IrQjSYflQ/csm-pincel-413e3aba36.jpg'
+    ];
 
     return Scaffold(
         appBar: AppBar(
@@ -45,36 +50,44 @@ class Home extends StatelessWidget {
                           )))
                 ],
               ),
-              const Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 30),
-                  Text(
-                    "Funcionário:",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
+                  const SizedBox(height: 30),
+                  Row(children: [
+                    const Expanded(
+                        child: Text(
+                      "Funcionário:",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    )),
+                    Expanded(
+                        flex: 1,
+                        child: ElevatedButton(
+                            onPressed: () {
+                              switch (imageIndex) {
+                                case 0:
+                                  imageIndex = 1;
+                                  break;
+                                case 1:
+                                  imageIndex = 2;
+                                  break;
+                                case 2:
+                                  imageIndex = 0;
+                                  break;
+                              }
+                              ;
+
+                              print(imagens[imageIndex]);
+                            },
+                            child: const Text("Clique aqui")))
+                  ]),
                   SizedBox(
                       height: 300,
                       width: 200,
-                      child: Image(
-                          image: NetworkImage(
-                              'https://i.pinimg.com/736x/a3/71/4b/a3714ba657487833c35ef16632f7b896.jpg'))),
-                  SizedBox(
-                      height: 300,
-                      width: 200,
-                      child: Image(
-                          image: NetworkImage(
-                              'https://www.diariodocentrodomundo.com.br/wp-content/uploads/2014/07/mussum-1.jpg'))),
-                  SizedBox(
-                      height: 200,
-                      width: 200,
-                      child: Image(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(
-                              'https://s2-g1.glbimg.com/vbxlmE70yvlrZOlq0Jd0Q5FzXwQ=/0x0:730x489/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2022/E/6/6a7nQrT1uf8IrQjSYflQ/csm-pincel-413e3aba36.jpg')))
+                      child: Image(image: NetworkImage(imagens[imageIndex]))),
                 ],
               )
             ],
@@ -95,7 +108,6 @@ class Home extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {
                   matricula.clear();
-                  nome.clear();
                 },
                 child: const Text("Limpar"),
               ),
