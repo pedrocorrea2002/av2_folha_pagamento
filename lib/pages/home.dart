@@ -9,16 +9,16 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
+  final TextEditingController matricula = TextEditingController();
+  int imageIndex = 0;
+  List<String> imagens = [
+    'https://i.pinimg.com/736x/a3/71/4b/a3714ba657487833c35ef16632f7b896.jpg',
+    'https://www.diariodocentrodomundo.com.br/wp-content/uploads/2014/07/mussum-1.jpg',
+    'https://s2-g1.glbimg.com/vbxlmE70yvlrZOlq0Jd0Q5FzXwQ=/0x0:730x489/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2022/E/6/6a7nQrT1uf8IrQjSYflQ/csm-pincel-413e3aba36.jpg'
+  ];
+
   @override
   Widget build(BuildContext context) {
-    final TextEditingController matricula = TextEditingController();
-    int imageIndex = 0;
-    List<String> imagens = [
-      'https://i.pinimg.com/736x/a3/71/4b/a3714ba657487833c35ef16632f7b896.jpg',
-      'https://www.diariodocentrodomundo.com.br/wp-content/uploads/2014/07/mussum-1.jpg',
-      'https://s2-g1.glbimg.com/vbxlmE70yvlrZOlq0Jd0Q5FzXwQ=/0x0:730x489/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2022/E/6/6a7nQrT1uf8IrQjSYflQ/csm-pincel-413e3aba36.jpg'
-    ];
-
     return Scaffold(
         appBar: AppBar(
           title: const Text(
@@ -89,9 +89,11 @@ class HomeState extends State<Home> {
                             child: const Text("Clique aqui")))
                   ]),
                   SizedBox(
-                      height: 300,
-                      width: 200,
-                      child: Image(image: NetworkImage(imagens[imageIndex]))),
+                      height: 250,
+                      width: 180,
+                      child: Image(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(imagens[imageIndex]))),
                 ],
               )
             ],
