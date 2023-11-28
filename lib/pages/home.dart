@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_combo_box/flutter_combo_box.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -16,6 +17,8 @@ class HomeState extends State<Home> {
     'https://www.diariodocentrodomundo.com.br/wp-content/uploads/2014/07/mussum-1.jpg',
     'https://s2-g1.glbimg.com/vbxlmE70yvlrZOlq0Jd0Q5FzXwQ=/0x0:730x489/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2022/E/6/6a7nQrT1uf8IrQjSYflQ/csm-pincel-413e3aba36.jpg'
   ];
+  List<String> cidades = ["Resende", "Itatiaia", "Mendes"];
+  String cidadeSelected = "";
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +100,17 @@ class HomeState extends State<Home> {
                           image: NetworkImage(imagens[imageIndex]))),
                   const SizedBox(height: 10)
                 ],
-              )
+              ),
+              const SizedBox(height: 10),
+              const Text("Cidades",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              DropdownButtonFormField<String>(
+                  items: cidades.map((cidade) {
+                    return DropdownMenuItem(value: cidade, child: Text(cidade));
+                  }).toList(),
+                  onChanged: (value) => setState(() {
+                        cidadeSelected = value ?? "";
+                      }))
             ],
           ),
         ),
