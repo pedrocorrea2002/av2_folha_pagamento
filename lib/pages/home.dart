@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_combo_box/flutter_combo_box.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -17,8 +16,15 @@ class HomeState extends State<Home> {
     'https://www.diariodocentrodomundo.com.br/wp-content/uploads/2014/07/mussum-1.jpg',
     'https://s2-g1.glbimg.com/vbxlmE70yvlrZOlq0Jd0Q5FzXwQ=/0x0:730x489/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2022/E/6/6a7nQrT1uf8IrQjSYflQ/csm-pincel-413e3aba36.jpg'
   ];
-  List<String> cidades = ["Resende", "Itatiaia", "Mendes"];
-  String cidadeSelected = "";
+  List<String> cidades = ["Resende", "Itatiaia", "Volta Redonda"];
+  String cidadeSelecionada = "";
+  Map<String, List<String>> bairros = {
+    "Resende": ["Cidade alegria", "Campos Elísios", "Morada da colina"],
+    "Itatiaia": ["Jardim paineiras", "Vila Odete", "Vila Pinheiro"],
+    "Volta Redonda": ["São Luís", "Candelária", "Dom Bosco"]
+  };
+  List<String> bairrosDisponiveis = [];
+  String bairroSelecionado = "";
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +40,7 @@ class HomeState extends State<Home> {
           padding: const EdgeInsets.only(top: 40, left: 30, right: 30),
           child: ListView(
             children: [
+              //* PARTE DA MATRÍCULA
               Row(
                 children: [
                   const Expanded(
@@ -58,6 +65,8 @@ class HomeState extends State<Home> {
                           )))
                 ],
               ),
+
+              //* PARTE DO FUNCIONÁRIO
               Column(
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -101,6 +110,8 @@ class HomeState extends State<Home> {
                   const SizedBox(height: 10)
                 ],
               ),
+
+              //* PARTE DAS CAIXAS COM LISTA
               const SizedBox(height: 10),
               const Text("Cidades",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
@@ -109,8 +120,25 @@ class HomeState extends State<Home> {
                     return DropdownMenuItem(value: cidade, child: Text(cidade));
                   }).toList(),
                   onChanged: (value) => setState(() {
-                        cidadeSelected = value ?? "";
-                      }))
+                        cidadeSelecionada = value ?? "";
+                        bairrosDisponiveis = bairros[cidadeSelecionada]!;
+                      })),
+              const SizedBox(height: 10),
+              const Text("Bairros",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              DropdownButtonFormField<String>(
+                  items: bairrosDisponiveis.map((bairro) {
+                    return DropdownMenuItem(value: bairro, child: Text(bairro));
+                  }).toList(),
+                  onChanged: (value) => setState(() {
+                        bairroSelecionado = value ?? "";
+                      })),
+              const SizedBox(height: 20),
+
+              //* PARTE DO CÁLCULO DA FOLHA
+              const Text("Cálculo da Folha",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold))
             ],
           ),
         ),
